@@ -93,6 +93,17 @@ def edit_entry(request, entry_id):
     return render(request, 'learning_logs/edit_entry.html', context)
 
 
+@login_required
+def delete_entry(request, entry_id):
+    """Удаляет существующую запись"""
+    entry = Entry.objects.get(id=entry_id)
+    topic = entry.topic
+    check_topic_owner(request, topic)
+
+    entry.delete()
+    return redirect('learning_logs:topic', topic_id=topic.id)
+
+
 def check_topic_owner(request, topic):
     """Проверяет связь между пользователем и темой"""
     if topic.owner != request.user:
