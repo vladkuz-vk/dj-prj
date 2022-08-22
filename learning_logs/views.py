@@ -14,7 +14,10 @@ def index(request):
 @login_required
 def topics(request):
     """Выводит список тем"""
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
+    if request.user.username == 'admin':
+        topics = Topic.objects.all()
+    else:
+        topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {'topics': topics}
     return render(request, 'learning_logs/topics.html', context)
 
@@ -106,5 +109,5 @@ def delete_entry(request, entry_id):
 
 def check_topic_owner(request, topic):
     """Проверяет связь между пользователем и темой"""
-    if topic.owner != request.user:
+    if topic.owner != request.user and request.user.username != 'admin':
         raise Http404
