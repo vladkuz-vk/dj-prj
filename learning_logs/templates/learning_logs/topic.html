@@ -7,20 +7,14 @@
 
 {% block content %}
   <p>
-    <a href="{% url 'learning_logs:new_entry' topic.id %}">Add new entry</a>
+    <a class="btn btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</a>
   </p>
   {% for entry in entries %}
     <div class="card mb-3">
       <h4 class="card-header">
         {{ entry.date_added|date:'M d, Y H:i' }}
-          <form action="{% url 'learning_logs:edit_entry' entry.id %}">
-            {% csrf_token %}
-            <button name="submit" class="btn btn-primary">Edit entry</button>
-          </form>
-          <form action="{% url 'learning_logs:delete_entry' entry.id %}">
-            {% csrf_token %}
-            <button name="submit" class="btn btn-primary">Delete entry</button>
-          </form>
+        <a class="btn btn-secondary btn-sm" href="{% url 'learning_logs:edit_entry' entry.id %}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</a>
+        <a class="btn btn-danger btn-sm" href="{% url 'learning_logs:delete_entry' entry.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</a>
       </h4>
       <div class="card-body">
         {{ entry.text|linebreaks }}
