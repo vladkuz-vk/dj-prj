@@ -8,6 +8,7 @@
 {% block content %}
   <p>
     <a class="btn btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</a>
+    <a class="btn btn-danger" href="{% url 'learning_logs:delete_topic' topic.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</a>
   </p>
   {% for entry in entries %}
     <div class="card mb-3">

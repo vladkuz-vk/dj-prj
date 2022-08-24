@@ -9,7 +9,11 @@
       Whenever you learn something new about a topic,
       make an entry summarizing what you've learned.</p>
 
-    <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}"
-       role="button">Register &raquo;</a>
+    {% if user.is_authenticated %}
+    {% else %}
+      <a class="btn btn-lg btn-primary" href="{% url 'users:register' %}" role="button">Register</a>
+      <a class="btn btn-lg btn-primary" href="{% url 'users:login' %}" role="button">Log in</a>
+    {% endif %}
+
   </div>
 {% endblock page_header %}

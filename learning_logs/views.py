@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
@@ -25,7 +25,7 @@ def topics(request):
 @login_required
 def topic(request, topic_id):
     """Выводит одну тему и все ее записи"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic, pk=topic_id)
     check_topic_owner(request, topic)
 
     entries = topic.entry_set.order_by('-date_added')
@@ -53,10 +53,19 @@ def new_topic(request):
     return render(request, 'learning_logs/new_topic.html', context)
 
 
+def delete_topic(request, topic_id):
+    """Удаляет существующую тему"""
+    topic = get_object_or_404(Topic, pk=topic_id)
+    check_topic_owner(request, topic)
+
+    topic.delete()
+    return redirect('learning_logs:topics')
+
+
 @login_required
 def new_entry(request, topic_id):
     """Добавляет новую запись по конкретной теме"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = get_object_or_404(Topic, pk=topic_id)
     check_topic_owner(request, topic)
     if request.method != 'POST':
         # Данные не отправлялись, создается пустая форма
@@ -78,7 +87,7 @@ def new_entry(request, topic_id):
 @login_required
 def edit_entry(request, entry_id):
     """Редактирует существующую запись"""
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry, pk=entry_id)
     topic = entry.topic
     check_topic_owner(request, topic)
 
@@ -99,7 +108,7 @@ def edit_entry(request, entry_id):
 @login_required
 def delete_entry(request, entry_id):
     """Удаляет существующую запись"""
-    entry = Entry.objects.get(id=entry_id)
+    entry = get_object_or_404(Entry, pk=entry_id)
     topic = entry.topic
     check_topic_owner(request, topic)
 
