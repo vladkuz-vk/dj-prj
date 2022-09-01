@@ -8,21 +8,54 @@
 {% block content %}
   <p>
     <a class="btn btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</a>
-    <a class="btn btn-danger" href="{% url 'learning_logs:delete_topic' topic.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</a>
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_topic"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</button>
   </p>
   {% for entry in entries %}
     <div class="card mb-3">
       <h4 class="card-header">
         {{ entry.date_added|date:'M d, Y H:i' }}
         <a class="btn btn-secondary btn-sm" href="{% url 'learning_logs:edit_entry' entry.id %}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</a>
-        <a class="btn btn-danger btn-sm" href="{% url 'learning_logs:delete_entry' entry.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</a>
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_entry"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</button>
       </h4>
       <div class="card-body">
         {{ entry.text|linebreaks }}
       </div>
     </div>
+    <div class="modal fade" id="delete_entry" tabindex="-1" aria-labelledby="delete_entryLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="delete_entryLabel">Delete entry</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a class="btn btn-danger" href="{% url 'learning_logs:delete_entry' entry.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</a>
+          </div>
+        </div>
+      </div>
+    </div>
   {% empty %}
     <p>There are no entries for this topic yet.</p>
   {% endfor %}
-
+  <div class="modal fade" id="delete_topic" tabindex="-1" aria-labelledby="delete_topicLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="delete_topicLabel">Delete a topic</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <a class="btn btn-danger" href="{% url 'learning_logs:delete_topic' topic.id %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock content %}

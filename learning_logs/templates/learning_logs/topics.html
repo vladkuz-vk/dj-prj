@@ -1,5 +1,6 @@
 {% extends "learning_logs/base.html" %}
 
+
 {% block page_header %}
   <h1>Topics</h1>
 {% endblock page_header %}
@@ -14,6 +15,5 @@
       <li><h3>No topics have been added yet.</h3></li>
     {% endfor %}
   </ul>
-
   <h3><a class="btn btn-primary" href="{% url 'learning_logs:new_topic' %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add new topic</a></h3>
 {% endblock content %}
