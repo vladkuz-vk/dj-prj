@@ -6,21 +6,46 @@
 {% endblock page_header %}
 
 {% block content %}
-  <p>
-    <a class="btn btn-primary" href="{% url 'learning_logs:new_entry' topic.id %}" role="button"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</a>
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_topic"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</button>
-  </p>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new_entry"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</button>
+  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_topic"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</button>
+  <p></p>
   {% for entry in entries %}
     <div class="card mb-3">
       <h4 class="card-header">
-        {{ entry.date_added|date:'M d, Y H:i' }}
-        <a class="btn btn-secondary btn-sm" href="{% url 'learning_logs:edit_entry' entry.id %}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</a>
+        {{ entry.date_added|date:'M d, Y H:i' }}<br>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_entry"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</button>
         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_entry"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</button>
       </h4>
       <div class="card-body">
         {{ entry.text|linebreaks }}
       </div>
     </div>
+
+    <div class="modal fade" id="edit_entry" tabindex="-1" aria-labelledby="edit_entryLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="edit_entryLabel">New entry</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id='form_edit_entry' action="{% url 'learning_logs:edit_entry' entry.id %}" method="post" class="form">
+              {% csrf_token %}
+              <div class=" mb-3">
+                <label for="id_text" class="form-label">Entry:</label>
+                <textarea class="form-control" name="text" maxlength="1000" rows="10" required id="id_text">{{ entry.text }}</textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form='form_edit_entry' name="submit" class="btn btn-primary"> Save changes</button>
+            <input form='form_edit_entry' type="hidden" name="next" value="{% url 'learning_logs:topic' topic.id%}">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="delete_entry" tabindex="-1" aria-labelledby="delete_entryLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -41,6 +66,31 @@
   {% empty %}
     <p>There are no entries for this topic yet.</p>
   {% endfor %}
+  <div class="modal fade" id="new_entry" tabindex="-1" aria-labelledby="new_entryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new_entryLabel">New entry</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id='form_new_entry' action="{% url 'learning_logs:new_entry' topic.id %}" method="post" class="form">
+            {% csrf_token %}
+            <div class=" mb-3">
+              <label for="id_text" class="form-label">Entry:</label>
+              <textarea class="form-control" name="text" maxlength="1000" rows="10" required id="id_text"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button form='form_new_entry' name="submit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add entry</button>
+          <input form='form_new_entry' type="hidden" name="next" value="{% url 'learning_logs:topic' topic.id%}">
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="delete_topic" tabindex="-1" aria-labelledby="delete_topicLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
