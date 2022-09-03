@@ -7,25 +7,25 @@
 
 {% block content %}
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#new_entry"><i class="fa fa-plus" aria-hidden="true"></i> Add new entry</button>
-  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_topic"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete a topic</button>
+  <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_topic"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete topic</button>
   <p></p>
   {% for entry in entries %}
     <div class="card mb-3">
       <h4 class="card-header">
         {{ entry.date_added|date:'M d, Y H:i' }}<br>
-        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_entry"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</button>
-        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_entry"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</button>
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#edit_entry_{{ entry.id }}"><i class="fa fa-pencil" aria-hidden="true"></i> Edit entry</button>
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#delete_entry_{{ entry.id }}"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete entry</button>
       </h4>
       <div class="card-body">
         {{ entry.text|linebreaks }}
       </div>
     </div>
 
-    <div class="modal fade" id="edit_entry" tabindex="-1" aria-labelledby="edit_entryLabel" aria-hidden="true">
+    <div class="modal fade" id="edit_entry_{{ entry.id }}" tabindex="-1" aria-labelledby="edit_entryLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="edit_entryLabel">New entry</h5>
+            <h5 class="modal-title" id="edit_entryLabel">Edit entry</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div class="modal fade" id="delete_entry" tabindex="-1" aria-labelledby="delete_entryLabel" aria-hidden="true">
+    <div class="modal fade" id="delete_entry_{{ entry.id }}" tabindex="-1" aria-labelledby="delete_entryLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -95,7 +95,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="delete_topicLabel">Delete a topic</h5>
+          <h5 class="modal-title" id="delete_topicLabel">Delete topic</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

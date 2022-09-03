@@ -6,6 +6,11 @@
 {% endblock page_header %}
 
 {% block content %}
+  <style>
+  ul {
+    margin-bottom: 0;
+  }
+   </style>
   {% if form.errors.username or form.errors.password1 or form.errors.password2 %}
     <div class="alert alert-danger" role="alert">
       <div>{{form.errors.username}}</div>
